@@ -1,0 +1,8 @@
+pandas==1.5.3
+snowflake-connector-python==3.0.0
+streamlit==1.17.0
+pyarrow==10.0.0
+plotly==5.13.0
+geopy==2.3.0
+streamlit-authenticator==0.2.1
+google-analytics-data==0.16.1
