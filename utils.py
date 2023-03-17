@@ -1,5 +1,4 @@
 import snowflake.connector
-import config
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -28,12 +27,12 @@ DATABASE = str(os.getenv("SNOWFLAKE_DATABASE", ''))
 SCHEMA = str(os.getenv("SNOWFLAKE_SCHEMA", ''))
 
 ctx = snowflake.connector.connect(
-    user=config.USER,
-    password=config.PASSWORD,
-    account=config.ACCOUNT,
-    warehouse=config.WAREHOUSE,
-    database=config.DATABASE,
-    schema=config.SCHEMA
+    user=USER,
+    password=PASSWORD,
+    account=ACCOUNT,
+    warehouse=WAREHOUSE,
+    database=DATABASE,
+    schema=SCHEMA
 )
 cur = ctx.cursor()
 

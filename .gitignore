@@ -1,5 +1,4 @@
 env.sh
 __pycache__/
-.idea/
 .DS_Store
 boletia-airbyte-ga.json
