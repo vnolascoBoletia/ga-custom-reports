@@ -68,7 +68,9 @@ df_cities = st.session_state["df_cities"]
 df_ages = st.session_state["df_ages"]
 df_genders = st.session_state["df_genders"]
 #st.write(events_list)  # list of events to be queried
-#st.write(df_cities)   # dataframe with the GA report response
+#st.write(df_cities)   # dataframe with the GA cities report response
+#st.write(df_ages)   # dataframe with the GA ages report response
+#st.write(df_genders)   # dataframe with the GA genres report response
 
 # Customers localization
 customers_map_container = st.container()

@@ -88,6 +88,7 @@ def customers_cities_report(events_list):
             Dimension(name="region"),
             Dimension(name="country"),
             #Dimension(name="hostName"),
+            #Dimension(name="pagePath")
         ],
         metrics=[Metric(name="totalUsers")],
         date_ranges=[DateRange(start_date="365daysAgo", end_date="today")],
@@ -136,6 +137,7 @@ def get_cities_to_dataframe(response):
             "ESTADO": row.dimension_values[1].value,
             "PAIS": row.dimension_values[2].value,
             #"hostname": row.dimension_values[3].value,
+            #"pagePath": row.dimension_values[4].value,
             "COMPRADORES": row.metric_values[0].value
         }
         
@@ -173,6 +175,7 @@ def customers_ages_report(events_list):
         dimensions=[
             Dimension(name="userAgeBracket"),
             #Dimension(name="hostName"),
+            #Dimension(name="pagePath")
         ],
         metrics=[Metric(name="totalUsers")],
         date_ranges=[DateRange(start_date="365daysAgo", end_date="today")],
@@ -218,7 +221,10 @@ def get_ages_to_dataframe(response):
         # Create an auxiliary dictionary to create a new row
         new_row = {
             "EDAD": row.dimension_values[0].value,
+            #"hostname": row.dimension_values[1].value,
+            #"pagePath": row.dimension_values[2].value,
             "COMPRADORES": row.metric_values[0].value
+            
         }
         
         # Add the new row to the dataframe
@@ -249,6 +255,7 @@ def customers_genders_report(events_list):
         dimensions=[
             Dimension(name="userGender"),
             #Dimension(name="hostName"),
+            #Dimension(name="pagePath")
         ],
         metrics=[Metric(name="totalUsers")],
         date_ranges=[DateRange(start_date="365daysAgo", end_date="today")],
@@ -294,6 +301,8 @@ def get_genders_to_dataframe(response):
         # Create an auxiliary dictionary to create a new row
         new_row = {
             "GENERO": row.dimension_values[0].value,
+            #"hostname": row.dimension_values[1].value,
+            #"pagePath": row.dimension_values[2].value,
             "COMPRADORES": row.metric_values[0].value
         }
         
