@@ -6,3 +6,4 @@ plotly==5.13.0
 geopy==2.3.0
 streamlit-authenticator==0.2.1
 google-analytics-data==0.16.1
+google-auth==2.16.2
