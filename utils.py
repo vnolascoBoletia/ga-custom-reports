@@ -5,6 +5,9 @@ import pandas as pd
 import datetime
 import requests
 import os
+import json
+from google.oauth2 import service_account
+from google.auth.transport.requests import Request
 from pandas.api.types import CategoricalDtype
 from geopy.geocoders import Nominatim
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
@@ -18,14 +21,16 @@ from google.analytics.data_v1beta.types import (
     RunReportRequest,
 )
 
-# Database connection
+# Reading enviroment variables
 USER = str(os.getenv("SNOWFLAKE_USER", ''))
 PASSWORD = str(os.getenv("SNOWFLAKE_PASSWORD", ''))
 ACCOUNT = str(os.getenv("SNOWFLAKE_ACCOUNT", ''))
 WAREHOUSE = str(os.getenv("SNOWFLAKE_WAREHOUSE", ''))
 DATABASE = str(os.getenv("SNOWFLAKE_DATABASE", ''))
 SCHEMA = str(os.getenv("SNOWFLAKE_SCHEMA", ''))
+GA_CREDENTIALS = json.loads(str(os.getenv("GOOGLE_CREDENTIALS", '')))
 
+# Snowfake connection
 ctx = snowflake.connector.connect(
     user=USER,
     password=PASSWORD,
@@ -36,6 +41,8 @@ ctx = snowflake.connector.connect(
 )
 cur = ctx.cursor()
 
+# Google Analytics credentials
+creds = service_account.Credentials.from_service_account_info(GA_CREDENTIALS)
 
 # Importing GeoJson Mexico data
 repo_url = 'https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json' # Mexico GeoJson file
@@ -43,7 +50,6 @@ mx_regions_geo = requests.get(repo_url).json()
 
 
 # Get the organizer's active events information
-@st.cache
 def load_organizer_active_events(organizer_id):
     # Execute a query to extract the data
     sql = f"""select
@@ -72,14 +78,11 @@ def load_organizer_active_events(organizer_id):
 
 
 # Run the report request to google Analytics
-@st.cache
 def customers_cities_report(events_list):
     """Runs a simple report on a Google Analytics 4 property."""
     property_id = "251040423"
 
-    # Using a default constructor instructs the client to use the credentials
-    # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-    client = BetaAnalyticsDataClient()
+    client = BetaAnalyticsDataClient(credentials=creds)
 
     request = RunReportRequest(
         property=f"properties/{property_id}",
@@ -122,7 +125,6 @@ def customers_cities_report(events_list):
 
 
 # Convert the GA report response to a pandas dataframe
-@st.cache
 def get_cities_to_dataframe(response):
 
     # Empty dataframe with the structure of the report
@@ -159,14 +161,11 @@ def get_cities_to_dataframe(response):
 
 
 # Run the report request to google Analytics
-@st.cache
 def customers_ages_report(events_list):
     """Runs a simple report on a Google Analytics 4 property."""
     property_id = "251040423"
 
-    # Using a default constructor instructs the client to use the credentials
-    # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-    client = BetaAnalyticsDataClient()
+    client = BetaAnalyticsDataClient(credentials=creds)
 
     request = RunReportRequest(
         property=f"properties/{property_id}",
@@ -207,7 +206,6 @@ def customers_ages_report(events_list):
 
 
 # Convert the GA report response to a pandas dataframe
-@st.cache
 def get_ages_to_dataframe(response):
 
     # Empty dataframe with the structure of the report
@@ -235,14 +233,11 @@ def get_ages_to_dataframe(response):
 
 
 # Run the report request to google Analytics
-@st.cache
 def customers_genders_report(events_list):
     """Runs a simple report on a Google Analytics 4 property."""
     property_id = "251040423"
 
-    # Using a default constructor instructs the client to use the credentials
-    # specified in GOOGLE_APPLICATION_CREDENTIALS environment variable.
-    client = BetaAnalyticsDataClient()
+    client = BetaAnalyticsDataClient(credentials=creds)
 
     request = RunReportRequest(
         property=f"properties/{property_id}",
@@ -283,7 +278,6 @@ def customers_genders_report(events_list):
 
 
 # Convert the GA report response to a pandas dataframe
-@st.cache
 def get_genders_to_dataframe(response):
 
     # Empty dataframe with the structure of the report
