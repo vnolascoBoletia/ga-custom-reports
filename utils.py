@@ -22,13 +22,12 @@ from google.analytics.data_v1beta.types import (
 )
 
 # Reading enviroment variables
-USER = str(os.getenv("SNOWFLAKE_USER", ''))
-PASSWORD = str(os.getenv("SNOWFLAKE_PASSWORD", ''))
-ACCOUNT = str(os.getenv("SNOWFLAKE_ACCOUNT", ''))
-WAREHOUSE = str(os.getenv("SNOWFLAKE_WAREHOUSE", ''))
-DATABASE = str(os.getenv("SNOWFLAKE_DATABASE", ''))
-SCHEMA = str(os.getenv("SNOWFLAKE_SCHEMA", ''))
-GA_CREDENTIALS = json.loads(str(os.getenv("GOOGLE_CREDENTIALS", '')))
+USER = st.secrets["SNOWFLAKE_USER"]
+PASSWORD = st.secrets["SNOWFLAKE_PASSWORD"]
+ACCOUNT = st.secrets["SNOWFLAKE_ACCOUNT"]
+WAREHOUSE = st.secrets["SNOWFLAKE_WAREHOUSE"]
+DATABASE = st.secrets["SNOWFLAKE_DATABASE"]
+SCHEMA = st.secrets["SNOWFLAKE_SCHEMA"]
 
 # Snowfake connection
 ctx = snowflake.connector.connect(
@@ -42,7 +41,7 @@ ctx = snowflake.connector.connect(
 cur = ctx.cursor()
 
 # Google Analytics credentials
-creds = service_account.Credentials.from_service_account_info(GA_CREDENTIALS)
+creds = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"])
 
 # Importing GeoJson Mexico data
 repo_url = 'https://raw.githubusercontent.com/angelnmara/geojson/master/mexicoHigh.json' # Mexico GeoJson file
